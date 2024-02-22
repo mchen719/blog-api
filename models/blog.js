@@ -1,13 +1,9 @@
-const { model, Schema } = require('mongoose')
+const {Schema, model} = require('mongoose')
 
-const blogSchema = new Schema ({
-    title: { required: true, type: String },
-    body: { required: true, type: String },
-    comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
-}, {
-    timestamps: true
+const blogSchema = new Schema({
+    title: String,
+    body: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User'}
 })
 
-const Blog = model('Blog', blogSchema)
-
-module.exports = Blog
+module.exports = model('Blog', blogSchema)

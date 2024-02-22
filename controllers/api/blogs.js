@@ -1,9 +1,44 @@
 const Blog = require('../../models/blog')
 
 
-// router.get('/', userCtrl.auth, blogsCtrl.indexBlogs)
+module.exports = {
+    create,
+    index,
+    show,
+    update,
+    destroy,
+    jsonBlogs,
+    jsonBlog
+}
 
-const indexBlogs = async (req, res, next) => {
+// jsonTodos jsonTodo
+// viewControllers
+
+function jsonBlog (_, res) {
+    res.json(res.locals.data.blog)
+}
+
+function jsonBlogs (_, res) {
+    res.json(res.locals.data.blogs)
+}
+
+/****** C - Create *******/
+async function create(req, res, next){
+    try {
+        req.body.user = req.user._id
+        const blog = await Blog.create(req.body)
+        req.user.blogs.addToSet(blog)
+        req.user.save()
+        res.locals.data.blog = blog
+        next()
+    } catch (error) {
+        res.status(400).json({ msg: error.message })
+    }
+}
+
+/****** R - Read *****/
+
+async function index(_, res ,next) {
     try {
         const blogs = await Blog.find({})
         res.locals.data.blogs = blogs
@@ -13,21 +48,8 @@ const indexBlogs = async (req, res, next) => {
     }
 }
 
-// router.post('/', userCtrl.auth, blogsCtrl.createBlog)
 
-const createBlog = async (req, res, next) => {
-    try {
-        const blog = await Blog.create(req.body)
-        res.locals.data.blog = blog
-        next()
-    } catch (error) {
-        res.status(400).json({ msg: error.message })
-    }
-}
-
-// router.get('/:id', userCtrl.auth, blogsCtrl.showBlog)
-
-const showBlog = async (req, res, next) => {
+async function show(req ,res,next) {
     try {
         const blog = await Blog.findById(req.params.id)
         res.locals.data.blog = blog
@@ -37,11 +59,13 @@ const showBlog = async (req, res, next) => {
     }
 }
 
-// router.put('/:id', userCtrl.auth, blogsCtrl.updateBlog)
 
-const updateBlog = async (req, res, next) => {
+/****** U - Update *****/
+
+
+async function update(req ,res,next) {
     try {
-        const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const blog = await Blog.findOneAndUpdate({_id : req.params.id,  user: req.user._id}, req.body, { new: true })
         res.locals.data.blog = blog
         next()
     } catch (error) {
@@ -49,22 +73,16 @@ const updateBlog = async (req, res, next) => {
     }
 }
 
-// router.delete('/:id', userCtrl.auth, blogsCtrl.deleteBlog)
+/***** D - destroy/delete *****/
 
-const deleteBlog = async (req, res, next) => {
+async function destroy(req ,res,next) {
     try {
-        const blog = await Blog.findByIdAndDelete(req.params.id)
-        res.locals.data.blog = blog 
+        const blog = await Blog.findOneAndDelete({_id : req.params.id,  user: req.user._id})
+        req.user.blogs.pull(blog)
+        req.user.save()
+        res.locals.data.blog = blog
         next()
     } catch (error) {
         res.status(400).json({ msg: error.message })
     }
-}
-
-module.exports = {
-    indexBlogs,
-    createBlog, 
-    showBlog, 
-    updateBlog, 
-    deleteBlog
 }
