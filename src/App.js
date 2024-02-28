@@ -137,7 +137,7 @@ export default function App(){
             <Routes>
                 <Route path="/" element={<HomePage user={user} token={token} setUser ={setUser} setToken={setToken} getAllBlogs={getAllBlogs} createBlog={createBlog}/>}></Route>
                 <Route path="/register" element={<AuthPage setUser={setUser} setToken={setToken} signUp={signUp} login={login}/> }></Route>
-                <Route path="/blog" element={<ShowPage user={user} token={token} setToken={setToken} getIndividualBlog={getIndividualBlog} deleteBlog={deleteBlog} updateBlog={updateBlog}/>}></Route>
+                <Route path="/blog/:id" element={<ShowPage user={user} token={token} setUser={setUser} setToken={setToken} getIndividualBlog={getIndividualBlog} deleteBlog={deleteBlog} updateBlog={updateBlog}/>}></Route>
             </Routes>
         </div>
     )

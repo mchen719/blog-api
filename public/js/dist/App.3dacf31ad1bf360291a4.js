@@ -161,16 +161,31 @@ function App() {
       login: login
     })
   }), /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Route, {
-    path: "/blog",
+    path: "/blog/:id",
     element: /*#__PURE__*/React.createElement(_pages_ShowPage_ShowPage__WEBPACK_IMPORTED_MODULE_3__["default"], {
       user: user,
       token: token,
+      setUser: setUser,
       setToken: setToken,
       getIndividualBlog: getIndividualBlog,
       deleteBlog: deleteBlog,
       updateBlog: updateBlog
     })
   })));
+}
+
+/***/ }),
+
+/***/ "./src/components/Blog/Blog.js":
+/*!*************************************!*\
+  !*** ./src/components/Blog/Blog.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* unused harmony export default */
+/* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function Blog(props) {
+  return /*#__PURE__*/React.createElement("h1", null, "Blog Form");
 }
 
 /***/ }),
@@ -184,9 +199,17 @@ function App() {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Blogs)
 /* harmony export */ });
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
 function Blogs(props) {
-  return /*#__PURE__*/React.createElement("h1", null, "Blogs Form");
+  return /*#__PURE__*/React.createElement("div", null, props.blogs.map(blog => {
+    return /*#__PURE__*/React.createElement("article", {
+      key: blog._id
+    }, /*#__PURE__*/React.createElement("h3", null, blog.title), /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_0__.Link, {
+      to: "/blog/".concat(blog._id)
+    }, "This is the link to ", blog.title));
+  }));
 }
 
 /***/ }),
@@ -200,9 +223,55 @@ function Blogs(props) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ CreateForm)
 /* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
 function CreateForm(props) {
-  return /*#__PURE__*/React.createElement("h1", null, "Create Form");
+  const [formData, setFormData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    title: '',
+    body: ''
+  });
+  const navigateTo = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const data = await props.createBlog(formData, props.token);
+      navigateTo("/blog/".concat(data._id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleChange = e => {
+    setFormData(_objectSpread(_objectSpread({}, formData), {}, {
+      [e.target.name]: e.target.value
+    }));
+  };
+  return /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/React.createElement("h2", null, "Create A New BlogPost ", props.user.name, " "), /*#__PURE__*/React.createElement("input", {
+    placeholder: "Title",
+    type: "text",
+    name: "title",
+    value: formData.title,
+    onChange: handleChange
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: "Body",
+    type: "text",
+    name: "body",
+    value: formData.body,
+    onChange: handleChange
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "submit",
+    value: "Create Blog"
+  }));
 }
 
 /***/ }),
@@ -325,6 +394,59 @@ function SignUpForm(props) {
 
 /***/ }),
 
+/***/ "./src/components/UpdateForm/UpdateForm.js":
+/*!*************************************************!*\
+  !*** ./src/components/UpdateForm/UpdateForm.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UpdateForm)
+/* harmony export */ });
+/* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function UpdateForm(props) {
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const data = await props.updateBlog(props.blog, props.id, props.token);
+      props.setBlog(data);
+      props.setShowUpdate(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleChange = e => {
+    props.setBlog(_objectSpread(_objectSpread({}, props.blog), {}, {
+      [e.target.name]: e.target.value
+    }));
+  };
+  return /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/React.createElement("h2", null, "Update Blog Below"), /*#__PURE__*/React.createElement("input", {
+    placeholder: "Title",
+    type: "text",
+    name: "title",
+    value: props.blog.title,
+    onChange: handleChange
+  }), /*#__PURE__*/React.createElement("input", {
+    placeholder: "Body",
+    type: "text",
+    name: "body",
+    value: props.blog.body,
+    onChange: handleChange
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "submit",
+    value: "Update Blog"
+  }));
+}
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -421,7 +543,11 @@ function HomePage(props) {
     }
   }, []); ///if dependency array is empty it will only run once on load 
 
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Welcome to Matty Ice's Blog"), showCreate ? /*#__PURE__*/React.createElement(_components_CreateForm_CreateForm__WEBPACK_IMPORTED_MODULE_1__["default"], null) : /*#__PURE__*/React.createElement(React.Fragment, null), blogs.length ? /*#__PURE__*/React.createElement(_components_Blogs_Blogs__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Welcome to Matty Ice's Blog"), showCreate ? /*#__PURE__*/React.createElement(_components_CreateForm_CreateForm__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    createBlog: props.createBlog,
+    user: props.user,
+    token: props.token
+  }) : /*#__PURE__*/React.createElement(React.Fragment, null), blogs.length ? /*#__PURE__*/React.createElement(_components_Blogs_Blogs__WEBPACK_IMPORTED_MODULE_2__["default"], {
     blogs: blogs
   }) : 'Sorry our writers are lazy');
 }
@@ -437,9 +563,80 @@ function HomePage(props) {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ ShowPage)
 /* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Blog_Blog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Blog/Blog */ "./src/components/Blog/Blog.js");
+/* harmony import */ var _components_UpdateForm_UpdateForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/UpdateForm/UpdateForm */ "./src/components/UpdateForm/UpdateForm.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-function ShowPage() {
-  return /*#__PURE__*/React.createElement("h1", null, "This is the Show page");
+
+
+
+
+function ShowPage(props) {
+  // display the individual blog post in all its glory----> Blog Component
+  // update the blogPost -----> UpdateForm
+  // delete the blog post ----> a wee little button
+  const [showUpdate, setShowUpdate] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [allowChanges, setAllowChanges] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [blog, setBlog] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    title: '',
+    body: '',
+    user: ''
+  });
+  const navigateTo = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+  const {
+    id
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useParams)(); // FE version of req.params
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const fetchBlog = async () => {
+      try {
+        const data = await props.getIndividualBlog(id);
+        setBlog(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchBlog();
+  }, []);
+  // checking the token & user in localStorage
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (localStorage.token && !props.token) {
+      props.setToken(localStorage.getItem('token'));
+    }
+    if (localStorage.token && localStorage.user && !props.user) {
+      props.setUser(JSON.parse(localStorage.getItem('user')));
+    }
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (blog && props.user._id === blog.user) {
+      setAllowChanges(true);
+    }
+  }, [props.user, blog]);
+  const handleDelete = async () => {
+    try {
+      await props.deleteBlog(id, props.token);
+      navigateTo('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+    to: '/'
+  }, "Home"), /*#__PURE__*/React.createElement("h1", null, (blog === null || blog === void 0 ? void 0 : blog.title) || 'Loading....'), /*#__PURE__*/React.createElement("p", null, (blog === null || blog === void 0 ? void 0 : blog.body) || ''), allowChanges ? /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowUpdate(!showUpdate)
+  }, "Reveal Update Form") : /*#__PURE__*/React.createElement(React.Fragment, null), allowChanges && showUpdate ? /*#__PURE__*/React.createElement(_components_UpdateForm_UpdateForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    id: id,
+    updateBlog: props.updateBlog,
+    setShowUpdate: setShowUpdate,
+    setBlog: setBlog,
+    blog: blog,
+    token: props.token,
+    setToken: props.token
+  }) : /*#__PURE__*/React.createElement(React.Fragment, null), allowChanges ? /*#__PURE__*/React.createElement("button", {
+    onClick: handleDelete
+  }, "Delete Blog") : /*#__PURE__*/React.createElement(React.Fragment, null));
 }
 
 /***/ }),
@@ -945,4 +1142,4 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=App.90692181cb03d8e1509488031130ff15.js.map
+//# sourceMappingURL=App.a93cf78774fa4189c6c5468c4e612aa3.js.map
