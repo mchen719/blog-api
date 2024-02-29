@@ -17,8 +17,8 @@ export default function LoginForm(props) {
                 e.preventDefault()
                 props.login(credentials)
             }}>
-                <input type='text' name='email' onChange={handleChange} value={credentials.email}/>
-                <input type='text' name='password' onChange={handleChange} value={credentials.password}/>
+                <input type='text' name='email' placeholder='Email' onChange={handleChange} value={credentials.email}/>
+                <input type='password' name='password' placeholder='Password' onChange={handleChange} value={credentials.password}/>
                 <input type="submit" value="Submit"/>
             </form>
         </>

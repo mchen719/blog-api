@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from '../../components/Blog/Blog'
 import UpdateForm from '../../components/UpdateForm/UpdateForm'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import styles from './ShowPage.module.scss'
 
 export default function ShowPage (props){
     // display the individual blog post in all its glory----> Blog Component
@@ -53,7 +54,7 @@ export default function ShowPage (props){
     }
 
     return(
-        <div>
+        <div className={styles.showPage}>
             <Link to={'/'}>Home</Link>
             <h1>{blog?.title || 'Loading....'}</h1>
             <p>{blog?.body || ''}</p>

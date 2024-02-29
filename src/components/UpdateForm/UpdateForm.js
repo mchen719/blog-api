@@ -1,3 +1,5 @@
+import styles from './UpdateForm.module.scss'
+
 export default function UpdateForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -15,7 +17,7 @@ export default function UpdateForm(props) {
     }
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form className= {styles.updateForm}onSubmit={handleSubmit}>
             <h2>Update Blog Below</h2>
             <input placeholder='Title' type="text" name="title" value={props.blog.title} onChange={handleChange}/>
             <input placeholder='Body' type="text" name="body" value={props.blog.body} onChange={handleChange}/>

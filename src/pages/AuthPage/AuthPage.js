@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import LoginForm from "../../components/LoginForm/LoginForm"
 import SignUpForm from "../../components/SignUpForm/SignUpForm"
+import styles from './AuthPage.module.scss'
 
 export default function AuthPage (props) {
     const [showLogin, setShowLogin] = useState(true)

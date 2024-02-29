@@ -18,9 +18,9 @@ export default function SignUpForm(props) {
                 e.preventDefault()
                 props.signUp(credentials)
             }}>
-                <input type='text' name='name' onChange={handleChange} value={credentials.name}/>
-                <input type='text' name='email' onChange={handleChange} value={credentials.email}/>
-                <input type='text' name='password' onChange={handleChange} value={credentials.password}/>
+                <input type='text' name="name" placeholder='Name' onChange={handleChange} value={credentials.name}/>
+                <input type='email' name="email" placeholder='Email' onChange={handleChange} value={credentials.email}/>
+                <input type='password' name="password" placeholder='Password' onChange={handleChange} value={credentials.password}/>
                 <input type="submit" value="Submit"/>
             </form>
         </>

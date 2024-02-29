@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import CreateForm from '../../components/CreateForm/CreateForm'
 import Blogs from '../../components/Blogs/Blogs'
+import styles from './HomePage.module.scss'
 
 export default function HomePage (props) {
     const [blogs, setBlogs] = useState([])
@@ -32,7 +33,7 @@ export default function HomePage (props) {
     }, []) ///if dependency array is empty it will only run once on load 
 
     return(
-        <div>
+        <div className={styles.homePage}>
             <h1>Welcome to Matty Ice's Blog</h1>
             { showCreate? <CreateForm createBlog={props.createBlog} user={props.user} token={props.token}/> : <></> }
             { blogs.length? <Blogs blogs={blogs}/> : 'Sorry our writers are lazy' }
